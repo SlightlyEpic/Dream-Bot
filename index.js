@@ -21,10 +21,10 @@ client.commands = new Discord.Collection();
 client.reload_commands = function() {
 	
 	this.commands.sweep(e => true);
-	const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+	const commandFiles = fs.readdirSync(__dirname + '/commands').filter(file => file.endsWith('.js'));
 
 	for (const file of commandFiles) {
-		const command = require(`./commands/${file}`);
+		const command = require(__dirname + `/commands/${file}`);
 		this.commands.set(command.name, command);
 		console.log(`\u001b[1;32m Imported ${file}`);
 	}
