@@ -27,7 +27,7 @@ module.exports = {
         return isSpotify;
     },
 
-    checkTicketSetup: function (guild) {
+    checkTicketSetup: function (guild, config) {
 
         let tRole = guild.roles.cache.find(r => r.name === config.ticketRoleName);
     

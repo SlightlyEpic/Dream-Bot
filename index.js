@@ -88,7 +88,7 @@ client.on("ready", () => {
                 console.log(`Left ${guild.name} - ${guild.id}`);
             })
         } else {
-            utility.checkTicketSetup(guild);
+            utility.checkTicketSetup(guild, config);
         }
     })
 
