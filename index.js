@@ -1,8 +1,8 @@
 const Discord = require("discord.js");
 const fs = require("fs")
-const config = require("./misc/config.json");
-const utility = require("./misc/utility.js");
-const Database = require("./misc/database.js");
+const config = require(__dirname + "/misc/config.json");
+const utility = require(__dirname + "/misc/utility.js");
+const Database = require(__dirname + "/misc/database.js");
 
 const client = new Discord.Client();
 let database;
