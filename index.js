@@ -82,7 +82,7 @@ client.on("ready", () => {
 	database.start();
 	   
 	client.guilds.cache.each(guild => {
-        if(!config.serverWhitelist.includes(guild.id)) {
+        if(!config.server_whitelist.includes(guild.id)) {
             guild.leave()
             .then(g => {
                 console.log(`Left ${guild.name} - ${guild.id}`);
