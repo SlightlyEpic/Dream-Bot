@@ -57,6 +57,7 @@ client.on("ready", () => {
 		console.log("\u001b[1;32mDatabase is ready")
 
 		//rr
+		/*
 		if(modules.rr) {
 			Object.keys(db.data["rr"]).forEach(message_id => {
 				if(message_id !== "_CHANNEL") {
@@ -76,6 +77,7 @@ client.on("ready", () => {
 				}
 			})
 		}
+		*/
 	})
    	database.start();
 })
