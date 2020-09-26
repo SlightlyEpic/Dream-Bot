@@ -1,5 +1,3 @@
-const { description } = require("./rr");
-
 module.exports = {
     name: "usage",
     description: "Provides the usage a specified command.",
