@@ -170,4 +170,5 @@ client.on("presenceUpdate", (oldPresence, newPresence) => {
 
 //------------------------------------------------------------------------------------------------------------//
 
+console.log("Logging in...");
 client.login(process.env.TOKEN);
