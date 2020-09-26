@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "discord.js": "^12.3.1"
+  },
+  "name": "dreambot",
+  "description": "A discord bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SlightlyEpic/DreamBot.git"
+  },
+  "author": "Oofus McDoofus",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SlightlyEpic/DreamBot/issues"
+  },
+  "homepage": "https://github.com/SlightlyEpic/DreamBot#readme"
+}
