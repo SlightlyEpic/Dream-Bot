@@ -79,7 +79,19 @@ client.on("ready", () => {
 		}
 		*/
 	})
-   	database.start();
+	database.start();
+	   
+	client.guilds.cache.each(guild => {
+        if(!config.serverWhitelist.includes(guild.id)) {
+            guild.leave()
+            .then(g => {
+                console.log(`Left ${guild.name} - ${guild.id}`);
+            })
+        } else {
+            utility.checkTicketSetup(guild);
+        }
+    })
+
 })
 
 client.on("message", message => {
@@ -140,7 +152,7 @@ client.on("presenceUpdate", (oldPresence, newPresence) => {
 	let spotifyRoleID = database.get("config", "spotifyRole")[0];
 	if(spotifyRoleID) {
 		let oldSpotify = oldPresence !== null || oldPresence !== undefined ? utility.listening_to_spotify(oldPresence) : false;
-		let newSpotify = utility.listening_to_spotify(newPresence);
+		let newSpotify = newPresence !== null || newPresence !== undefined ? utility.listening_to_spotify(newPresence) : false;
 		if(!oldSpotify && newSpotify) {
 			newPresence.member.roles.add(spotifyRoleID)
 			.then(() => {console.log(`Added spotify role to ${newPresence.member.displayName}`)})

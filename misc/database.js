@@ -63,6 +63,9 @@ module.exports = class Database{
      * ---folder -> String: name of the folder
      * ---address -> String: name of the address
      * ---value -> Array<String>: values to be stored at the address
+     * 
+     * keys(folder);
+     * ---folder -> String: name of the folder
     */
 
     constructor(client, guildID, channelID, Discord) {
@@ -365,5 +368,13 @@ module.exports = class Database{
         .catch(e => {
             return false;
         })
+    }
+
+    keys(folder) {
+        if(this.data[folder] !== undefined) {
+            return Object.keys(this.data[folder]);
+        } else {
+            return undefined;
+        }
     }
 }
