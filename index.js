@@ -88,7 +88,7 @@ client.on("ready", () => {
                 console.log(`Left ${guild.name} - ${guild.id}`);
             })
         } else {
-            utility.checkTicketSetup(guild, config);
+            checkTicketSetup(guild);
         }
     })
 
@@ -149,16 +149,20 @@ client.on("guildDelete", guild => {
 
 client.on("presenceUpdate", (oldPresence, newPresence) => {
 	//spotify role
-	let spotifyRoleID = database.get("config", "spotifyRole")[0];
-	if(spotifyRoleID) {
-		let oldSpotify = oldPresence !== null || oldPresence !== undefined ? utility.listening_to_spotify(oldPresence) : false;
-		let newSpotify = newPresence !== null || newPresence !== undefined ? utility.listening_to_spotify(newPresence) : false;
-		if(!oldSpotify && newSpotify) {
-			newPresence.member.roles.add(spotifyRoleID)
-			.then(() => {console.log(`Added spotify role to ${newPresence.member.displayName}`)})
-		} else if(oldSpotify && !newSpotify) {
-			newPresence.member.roles.remove(spotifyRoleID)
-			.then(() => {console.log(`Removed spotify role from ${newPresence.member.displayName}`)})
+	if(database.has_started) {
+		let spotifyRoleID = database.get("config", "spotifyRole")[0];
+		if(spotifyRoleID) {
+			let oldSpotify = oldPresence !== null && oldPresence !== undefined ? utility.listening_to_spotify(oldPresence) : false;
+			let newSpotify = newPresence !== null && newPresence !== undefined ? utility.listening_to_spotify(newPresence) : false;
+			if(!oldSpotify && newSpotify) {
+				newPresence.member.roles.add(spotifyRoleID)
+				.then(() => {console.log(`Added spotify role to ${newPresence.member.displayName}`)})
+				.catch(e => {console.log(`Could not add spotify role to ${newPresence.member.displayName} \n${e}`);})
+			} else if(oldSpotify && !newSpotify) {
+				newPresence.member.roles.remove(spotifyRoleID)
+				.then(() => {console.log(`Removed spotify role from ${newPresence.member.displayName}`)})
+				.catch(e => {console.log(`Could not remove spotify role from ${newPresence.member.displayName} \n${e}`);})
+			}
 		}
 	}
 	//
@@ -166,9 +170,55 @@ client.on("presenceUpdate", (oldPresence, newPresence) => {
 
 //------------------------------------------------------------------------------------------------------------//
 
+function checkTicketSetup(guild) {
+
+	let tRole = guild.roles.cache.find(r => r.name === config.ticket_role_name);
+
+	if(tRole == undefined) {
+		guild.roles.create({
+			data: {
+				name: config.ticket_role_name,
+				hoist: true,
+				mentionable: true,
+				color: "#31eb63"
+			},
+			reason: "Ticket Support role"
+		}).then(r => {
+			console.log(`Created ticket support role for ${guild.name} - ${guild.id}`);
+			tRole = r;
+		})
+	} //create the Ticket Support Role
+
+
+	if(guild.channels.cache.find(ch => ch.name.toLowerCase() == config.ticket_category && ch.type == "category") == undefined) {
+		guild.channels.create(config.ticket_category, {
+			type: "category"
+		})
+		.then(category => { //disable view for @everyone
+			category.createOverwrite(guild.roles.everyone, {
+				VIEW_CHANNEL: false
+			})
+			.then(category_ => {
+				//enable view for Ticket Support
+				category_.createOverwrite(tRole, {
+					VIEW_CHANNEL: true
+				})
+				.then(cat => {console.log(`Successfully initialized support ticket category for ${guild.name} - ${guild.id}`);})
+				.catch(e => {console.log(`Could not initialize support ticket category for ${guild.name} - ${guild.id}`);})
+			})
+			.catch(e => {
+				console.log("Couldnt change permissions for ticket category")
+			})
+		})
+		.catch(e => {
+			console.log("Couldnt create category");
+		})
+	}
+}
 
 
 //------------------------------------------------------------------------------------------------------------//
 
 console.log("Logging in...");
-client.login(process.env.TOKEN);
+//client.login(process.env.TOKEN);
+client.login("NzQ5OTQwNjc1OTY0OTYwODI4.X0zSrg.bfkBcbWFnBeJrzwMPB1yiV9TOo8");

@@ -25,50 +25,6 @@ module.exports = {
             }
         })
         return isSpotify;
-    },
-
-    checkTicketSetup: function (guild, config) {
-
-        let tRole = guild.roles.cache.find(r => r.name === config.ticketRoleName);
-    
-        if(tRole == undefined) {
-            guild.roles.create({
-                data: {
-                    name: config.ticketRoleName,
-                    hoist: true,
-                    mentionable: true,
-                    color: "#31eb63"
-                },
-                reason: "Ticket Support role"
-            }).then(r => {
-                console.log(`Created ticket support role for ${guild.name} - ${guild.id}`);
-                tRole = r;
-            })
-        } //create the Ticket Support Role
-    
-    
-        if(guild.channels.cache.find(ch => ch.name.toLowerCase() == config.ticketCategory && ch.type == "category") == undefined) {
-            guild.channels.create(config.ticketCategory, {
-                type: "category"
-            })
-            .then(category => { //disable view for @everyone
-                category.createOverwrite(guild.roles.everyone, {
-                    VIEW_CHANNEL: false
-                })
-                .then(category_ => {
-                    //enable view for Ticket Support
-                    category_.createOverwrite(tRole, {
-                        VIEW_CHANNEL: true
-                    })
-                })
-                .catch(e => {
-                    console.log("Couldnt change permissions for ticket category")
-                })
-            })
-            .catch(e => {
-                console.log("Couldnt create category");
-            })
-        }
     }
-
+    
 }
