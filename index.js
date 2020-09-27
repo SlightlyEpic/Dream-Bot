@@ -220,5 +220,4 @@ function checkTicketSetup(guild) {
 //------------------------------------------------------------------------------------------------------------//
 
 console.log("Logging in...");
-//client.login(process.env.TOKEN);
-client.login("NzQ5OTQwNjc1OTY0OTYwODI4.X0zSrg.bfkBcbWFnBeJrzwMPB1yiV9TOo8");
+//client.login(process.env.TOKEN);;
