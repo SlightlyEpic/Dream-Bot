@@ -220,4 +220,4 @@ function checkTicketSetup(guild) {
 //------------------------------------------------------------------------------------------------------------//
 
 console.log("Logging in...");
-//client.login(process.env.TOKEN);;
+client.login(process.env.TOKEN);
