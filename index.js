@@ -52,6 +52,15 @@ client.on("ready", () => {
 	Operating in ${client.guilds.cache.size} servers with ${client.users.cache.size} members
 	---------------------------------------------------------------------------------------------------
 	`)
+
+	client.user.setPresence({
+		activity: {
+			name: "you! rHelp",
+			type: "WATCHING"
+		},
+		status: "online"
+	})
+
 	//database = new Database(client, "744951698547802222", "751063276741459969", Discord);
 	database = new Database(client, "748436304223535105", "759315293721067560", Discord); //carleys server
 	database.on("ready", (db) => {
@@ -104,15 +113,19 @@ client.on("message", message => {
 
 		if(client.commands.has(command)) { //if command exists
 			if(!client.commands.get(command).developer_only) { //if command is not developer only
-				if(true) { //if command is enabled in the guild
+				let commandIsEnabled = database.get("config", `commands-${command}`);
+				if(commandIsEnabled !== undefined) {
+					commandIsEnabled = commandIsEnabled[0] === "0" ? false : true;
+				} else {
+					commandIsEnabled = true;
+				}
+				if(commandIsEnabled) { //if command is enabled in the guild
 					client.commands.get(command).execute(message, args, database);
-					//execute(message, args, context)
 				} else { //if command is disabled in the guild
 					message.channel.send("Command is disabled.");
 				}
 			} else if(config.developers.includes(message.author.id)) { //if command is developer only and author is a developer
 				client.commands.get(command).execute(message, args, database);
-				//execute(message, args, context)
 			}
 		}
 	} else {

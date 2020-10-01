@@ -39,7 +39,7 @@ module.exports = class Database{
      * ---folder -> String: name of the folder
      * ---address -> String: name of the address
      * 
-     * set(folder, address, value);
+     * set(folder, address, value); #ASYNC
      * ---folder -> String: name of the folder
      * ---address -> String: name of the address
      * ---value -> Array<String>: values to be stored at the address
@@ -59,7 +59,7 @@ module.exports = class Database{
      * ---folder -> String: name of the folder
      * ---address -> String: name of the address
      * 
-     * new_embed(folder, address, value);
+     * new_embed(folder, address, value); #ASYNC
      * ---folder -> String: name of the folder
      * ---address -> String: name of the address
      * ---value -> Array<String>: values to be stored at the address
@@ -160,9 +160,9 @@ module.exports = class Database{
         }
     }
 
-    set(folder, address, value) {
+    async set(folder, address, value) {
         if(this.data[folder] == undefined) return Error(`Folder named "${folder}" does not exist`);
-        if(this.data[folder][address] !== undefined) return this.update(folder, address, value);
+        if(this.data[folder][address] !== undefined) return await this.update(folder, address, value)
 
         const current_entries = Object.keys(this.data[folder]).length - 1 //minus one because it has an extra _CHANNEL property
         const fields_in_last_embed = current_entries % this.fields_per_embed;
@@ -195,14 +195,14 @@ module.exports = class Database{
                     return false;
                 })
             } else {
-                this.new_embed(folder, address, value);
+                return await this.new_embed(folder, address, value);
             }
         } else {
-            this.new_embed(folder, address, value);
+            return await this.new_embed(folder, address, value);
         }
     }
 
-    update(folder, address, value) {
+    async update(folder, address, value) {
         const message_id = this.data[folder][address]["_MESSAGEID"]
         this.data[folder]["_CHANNEL"].messages.fetch(message_id)
         .then(emb => {
@@ -352,7 +352,7 @@ module.exports = class Database{
         })
     }
 
-    new_embed(folder, address, value) {
+    async new_embed(folder, address, value) {
         this.data[folder]["_CHANNEL"].send(
             new this.Discord.MessageEmbed()
             .setColor("RANDOM")
