@@ -1,18 +1,23 @@
+const config = require("../misc/config.json");
+const {MessageEmbed} = require("discord.js");
+const debug = require("../misc/debugging.js");
+
 module.exports = {
     name: "ticket",
     description: "Open a support ticket!",
     usage: "ticket [reason]",
-    execute: function(message, arguments, context) {
+    execute: function(message, arguments, database) {
         //get ticket category
-        let ticket_category = message.guild.channels.cache.find(ch => ch.name.toLowerCase() == context.config.ticket_category && ch.type == "category");
+        let ticket_category = message.guild.channels.cache.find(ch => {
+            return ch.name.toLowerCase() == config.ticket_category && ch.type == "category";
+        })
     
         //create the ticket channel
         let ticketID = Math.floor(Math.random() * 100000);
         let reason = arguments.join(" ");
         if(reason == "") {reason = "No reason provided"}
     
-        //while(Object.keys(tickets.activeTickets).includes(ticketID)) {
-        while(context.database.keys("tickets").includes(ticketID)) {
+        while(database.keys("tickets").includes(ticketID)) {
             ticketID = Math.floor(Math.random() * 100000);
         } //gets rid of duplicate ticket ids
     
@@ -32,26 +37,26 @@ module.exports = {
                    })
             })
     
-            let out = new context.Discord.MessageEmbed()
+            let out = new MessageEmbed()
             .setColor("RANDOM")
             .setTitle(`Ticket-${ticketID}`)
             .setAuthor(message.member.nickname == null ? message.author.username : message.member.nickname)
             .addField("Reason", reason)
-            .addField("How do i close the ticket?", `Simply type \`${context.config.default_prefix}close\` to close the ticket`)
+            .addField("How do i close the ticket?", `Simply type \`${config.default_prefix}close\` to close the ticket`)
             .setTimestamp()
-            .setFooter(context.config.bot_name, context.client.user.avatarURL());
+            .setFooter(config.bot_name, message.client.user.avatarURL());
     
             ch.send(out);       //send info embed
-            ch.send(message.guild.roles.cache.find(r => r.name === context.config.ticket_role_name).toString());    //Ping staff
+            ch.send(message.guild.roles.cache.find(r => r.name === config.ticket_role_name).toString());    //Ping staff
             ch.send(`<@${message.author.id}>`);        //Ping ticket creator
             message.channel.send(
-                new context.Discord.MessageEmbed()
+                new MessageEmbed()
                 .setTitle("Successfully created a ticket!")
                 .setColor("RANDOM")
                 )
     
             //tickets.activeTickets[ticketID] = message.author.id;
-            context.database.set("tickets", ticketID, [message.author.id, reason, "OPEN"]);
+            database.set("tickets", ticketID, [message.author.id, reason, "OPEN"]);
     
             console.log(`New ticket opened by ${message.author.username} (${message.author.id}). Ticket ID: ${ticketID}. Reason: ${reason}`);
         })

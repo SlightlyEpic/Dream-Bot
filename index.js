@@ -1,8 +1,9 @@
 const Discord = require("discord.js");
 const fs = require("fs")
-const config = require(__dirname + "/misc/config.json");
-const utility = require(__dirname + "/misc/utility.js");
-const Database = require(__dirname + "/misc/database.js");
+const config = require("./misc/config.json");
+const utility = require("./misc/utility.js");
+const Database = require("./misc/database.js");
+const debug = require("./misc/debugging.js")
 
 const client = new Discord.Client();
 let database;
@@ -54,7 +55,7 @@ client.on("ready", () => {
 	//database = new Database(client, "744951698547802222", "751063276741459969", Discord);
 	database = new Database(client, "748436304223535105", "759315293721067560", Discord); //carleys server
 	database.on("ready", (db) => {
-		console.log("\u001b[1;32mDatabase is ready")
+		console.log("\u001b[1;32mDatabase is ready");
 
 		//rr
 		/*
@@ -104,17 +105,13 @@ client.on("message", message => {
 		if(client.commands.has(command)) { //if command exists
 			if(!client.commands.get(command).developer_only) { //if command is not developer only
 				if(true) { //if command is enabled in the guild
-					client.commands.get(command).execute(message, args, {
-						client: client, config: config, Discord: Discord, utility: utility, database: database
-					});
+					client.commands.get(command).execute(message, args, database);
 					//execute(message, args, context)
 				} else { //if command is disabled in the guild
 					message.channel.send("Command is disabled.");
 				}
 			} else if(config.developers.includes(message.author.id)) { //if command is developer only and author is a developer
-				client.commands.get(command).execute(message, args, {
-					client: client, config: config, Discord: Discord, utility: utility, database: database
-				});
+				client.commands.get(command).execute(message, args, database);
 				//execute(message, args, context)
 			}
 		}

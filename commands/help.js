@@ -1,4 +1,6 @@
-const { DiscordAPIError } = require("discord.js");
+const utility = require("../misc/utility");
+const config = require("../misc/config.json");
+const {MessageEmbed} = require("discord.js");
 
 module.exports = {
     name: "help",
@@ -7,20 +9,18 @@ module.exports = {
     help_config: {
         commands_per_page: 4
     },
-    execute: function(message, args, context) {
+    execute: function(message, args) {
         if(args.length == 0) {
-            this.help1(message, context)
+            this.help1(message)
         } else {
-            this.help2(message, args, context)
+            this.help2(message, args)
         }
     },
-    help1: function(message, context) {
+    help1: function(message) {
         //help without any arguments
         const commands_per_page = this.help_config.commands_per_page;
-        const Discord = context.Discord;
-        const utility = context.utility;
 
-        const commands = context.client.commands.filter(c => c.is_visible).keyArray();
+        const commands = message.client.commands.filter(c => c.is_visible).keyArray();
         const pages = [];
         let current_page_number = 0;
 
@@ -28,15 +28,15 @@ module.exports = {
             pages[page_number] = commands.slice(commands_per_page * page_number, commands_per_page * (page_number + 1))
         }
 
-        let out = new Discord.MessageEmbed()
+        let out = new MessageEmbed()
         .setTitle("Help")
         .setColor(utility.random_hex_colour())
         .setDescription(`Page ${current_page_number + 1}`)
-        .setFooter(context.config.bot_name)
+        .setFooter(config.bot_name)
         .setTimestamp()
 
         pages[current_page_number].forEach(c => {
-            out.addField(c, context.client.commands.get(c).description)
+            out.addField(c, message.client.commands.get(c).description)
         })
 
         message.channel.send(out)
@@ -65,15 +65,15 @@ module.exports = {
                         break;
                 }
 
-                let edit = new Discord.MessageEmbed()
+                let edit = new MessageEmbed()
                     .setTitle("Help")
                     .setColor(utility.random_hex_colour())
                     .setDescription(`Page ${current_page_number + 1}`)
-                    .setFooter(context.config.bot_name)
+                    .setFooter(config.bot_name)
                     .setTimestamp()
 
                 pages[current_page_number].forEach(c => {
-                    edit.addField(c, context.client.commands.get(c).description)
+                    edit.addField(c, message.client.commands.get(c).description)
                 })
                 m.edit(edit);
             })
@@ -83,19 +83,19 @@ module.exports = {
             })
         })
     },
-    help2: function(message, args, context) {
+    help2: function(message, args) {
         let command = args[0];
-        if(context.client.commands.has(command)) {
-            if(context.client.commands.get(command).is_visible) {
-                let queried_command = context.client.commands.get(command);
+        if(message.client.commands.has(command)) {
+            if(message.client.commands.get(command).is_visible) {
+                let queried_command = message.client.commands.get(command);
 
-                let out = new context.Discord.MessageEmbed()
+                let out = new MessageEmbed()
                 .setTitle("Help")
-                .setColor(context.utility.random_hex_colour())
+                .setColor(utility.random_hex_colour())
                 .setDescription(command)
                 .addField("Description", queried_command.description)
-                .addField("Usage", `${context.config.default_prefix}${queried_command.usage}`)
-                .setFooter(context.config.bot_name)
+                .addField("Usage", `${config.default_prefix}${queried_command.usage}`)
+                .setFooter(config.bot_name)
                 .setTimestamp()
                 message.channel.send(out);
                 return;

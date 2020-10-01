@@ -374,7 +374,7 @@ module.exports = class Database{
         if(this.data[folder] !== undefined) {
             return Object.keys(this.data[folder]);
         } else {
-            return undefined;
+            return [];
         }
     }
 }

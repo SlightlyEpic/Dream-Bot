@@ -1,8 +1,7 @@
 module.exports = {
 
     remove_empty_strings: function(arr) {
-
-        if(!Array.isArray(arr)) return null
+        if(!Array.isArray(arr)) return null;
 
         let out = [];
         arr.forEach(e => {
