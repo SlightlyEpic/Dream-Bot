@@ -9,7 +9,7 @@ module.exports = {
     developer_only: true,
     is_visible: false,
     execute: function(message, arguments, database) {
-        if(context.config.developers.includes(message.author.id)) {
+        if(config.developers.includes(message.author.id)) {
             const inp = message.content.substring(this.name.length + 1);
             
             const client = message.client;
