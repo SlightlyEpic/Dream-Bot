@@ -44,18 +44,18 @@ module.exports = class Database{
      * ---address -> String: name of the address
      * ---value -> Array<String>: values to be stored at the address
      * 
-     * update(folder, address, value);
+     * update(folder, address, value); #ASYNC
      * ---folder -> String: name of the folder
      * ---address -> String: name of the address
      * ---value -> Array<String>: values to be stored at the address
      * 
-     * create_folder(folder);
+     * create_folder(folder); #ASYNC
      * ---folder -> String: name of the folder
      * 
-     * delete_folder(folder);
+     * delete_folder(folder); #ASYNC
      *  ---folder -> String: name of the folder
      * 
-     * dispose(folder, address);
+     * dispose(folder, address); #ASYNC
      * ---folder -> String: name of the folder
      * ---address -> String: name of the address
      * 

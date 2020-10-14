@@ -14,8 +14,8 @@ module.exports = {
                 if(!message.client.commands.get(targetCommand).developer_only) {
                     //disable command
                     database.set("config", `commands-${targetCommand}`, ["0"])
-                    .then(wasSuccesful => {
-                        //if(wasSuccesful) message.channel.send(`Successfully disabled ${targetCommand}!`);
+                    .then(wasSuccessful => {
+                        //if(wasSuccessful) message.channel.send(`Successfully disabled ${targetCommand}!`);
                         //else message.channel.send(`Could not disable ${targetCommand}. Failed to write to db.`);
                         message.channel.send(`Successfully disabled ${targetCommand}!`);
                     })

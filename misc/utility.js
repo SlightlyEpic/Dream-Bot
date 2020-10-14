@@ -17,13 +17,14 @@ module.exports = {
     },
 
     listening_to_spotify: function(presence) {
-        let isSpotify = false;
+        let isListening = false;
         presence.activities.forEach(activity => {
             if(activity.name == "Spotify" && activity.type == "LISTENING") {
-                isSpotify = true;
+                isListening = true;
+                break;
             }
         })
-        return isSpotify;
+        return isListening;
     }
     
 }
