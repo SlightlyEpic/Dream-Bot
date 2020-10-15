@@ -119,7 +119,7 @@ client.on("message", message => {
 				})
 				.then(w => {
 					message.delete()
-					w.send("<a:Fire:766125911807623178>").then(() => {console.log("Sent")})
+					w.send("<a:Fire:766125911807623178>")
 				})
 			}
 		})
