@@ -62,7 +62,7 @@ client.on("ready", () => {
 	})
 
 	//database = new Database(client, "744951698547802222", "751063276741459969", Discord);
-	database = new Database(client, "748436304223535105", "759315293721067560", Discord); //carleys server
+	database = new Database(client, "748436304223535105", "766136553855909898", Discord); //carleys server
 	database.on("ready", (db) => {
 		console.log("\u001b[1;32mDatabase is ready");
 

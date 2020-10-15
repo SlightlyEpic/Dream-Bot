@@ -1,3 +1,5 @@
+let Discord = require("discord.js");
+
 module.exports = class Database{
 
     //⟷
@@ -5,7 +7,6 @@ module.exports = class Database{
     /*
      * PROPERTIES
      *
-     * this.Discord;
      * this.client;
      * this.data;
      * this.events;
@@ -68,8 +69,7 @@ module.exports = class Database{
      * ---folder -> String: name of the folder
     */
 
-    constructor(client, guildID, channelID, Discord) {
-        this.Discord = Discord;
+    constructor(client, guildID, channelID) {
         this.client = client;
         this.guildID = guildID;
         this.channelID = channelID;
@@ -183,7 +183,7 @@ module.exports = class Database{
                         this.data[folder]["_CHANNEL"].messages.fetch({limit: 1})
                         .then(m => {
                             m = m.first();
-                            let new_m = new this.Discord.MessageEmbed(m.embeds[0]);
+                            let new_m = new Discord.MessageEmbed(m.embeds[0]);
                             new_m.addField(address, value.join("⟷"))
 
                             m.edit(new_m)
@@ -223,7 +223,7 @@ module.exports = class Database{
             this.data[folder]["_CHANNEL"].messages.fetch(message_id)
             .then(emb => {
                 /*
-                let new_emb = new this.Discord.MessageEmbed(emb.embeds[0]);
+                let new_emb = new Discord.MessageEmbed(emb.embeds[0]);
                 new_emb.fields.forEach(field => {
                     console.log(field.name);
                     console.log(address);
@@ -232,7 +232,7 @@ module.exports = class Database{
                     }
                 })
                 */
-               let new_emb = new this.Discord.MessageEmbed();
+               let new_emb = new Discord.MessageEmbed();
                emb.embeds[0].fields.forEach(field => {
                    if(field.name !== address) {
                        new_emb.addField(field.name, field.value);
@@ -307,7 +307,7 @@ module.exports = class Database{
             const message_id = this.data[folder][address]["_MESSAGEID"];
             this.data[folder]["_CHANNEL"].messages.fetch(message_id)
             .then(emb => {
-                let new_emb = new this.Discord.MessageEmbed(emb.embeds[0]);
+                let new_emb = new Discord.MessageEmbed(emb.embeds[0]);
 
                 //grab newest message
                 const last_message_id = this.data[folder]["_CHANNEL"].lastMessageID;
@@ -337,7 +337,7 @@ module.exports = class Database{
                             })
                         }
                     } else {
-                        let new_last_message = new this.Discord.MessageEmbed(last_message.embeds[0]);
+                        let new_last_message = new Discord.MessageEmbed(last_message.embeds[0]);
                         let element_to_shift = new_last_message.fields.pop();
 
                         const index = new_emb.fields.indexOf(address);
@@ -390,7 +390,7 @@ module.exports = class Database{
     new_embed(folder, address, value) {
         return new Promise((resolve, reject) => {
             this.data[folder]["_CHANNEL"].send(
-                new this.Discord.MessageEmbed()
+                new Discord.MessageEmbed()
                 .setColor("RANDOM")
                 .addField(address, value.join("⟷"))
             )
