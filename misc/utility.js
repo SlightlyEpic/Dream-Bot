@@ -21,7 +21,6 @@ module.exports = {
         presence.activities.forEach(activity => {
             if(activity.name == "Spotify" && activity.type == "LISTENING") {
                 isListening = true;
-                break;
             }
         })
         return isListening;
