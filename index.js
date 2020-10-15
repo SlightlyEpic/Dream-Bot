@@ -107,6 +107,24 @@ client.on("ready", () => {
 client.on("message", message => {
 	if(message.author.bot) return;
 	if(message.channel.type == "dm") return;
+
+	if(message.content == "Fire" && message.channel.id == "748436304701685771") {
+		message.guild.fetchWebhooks()
+		.then(webhooks => {
+			let whook = webhooks.find(webhook => webhook.channelID == "748436304701685771")
+			if(whook) {
+				whook.edit({
+					avatar: message.author.displayAvatarURL(),
+					name: message.author.username
+				})
+				.then(w => {
+					message.delete()
+					w.send("<a:Fire:766125911807623178>").then(() => {console.log("Sent")})
+				})
+			}
+		})
+	}
+
 	if(message.content.trim().startsWith(config.default_prefix)) {
 		const command = message.content.trim().split(" ")[0].toLowerCase().substring(config.default_prefix.length);
 		const args = utility.remove_empty_strings(message.content.trim().split(" ").slice(1));
