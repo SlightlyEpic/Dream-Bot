@@ -21,8 +21,8 @@ module.exports = class Database{
     /*
      * EVENTS
      *
-     * ready();
-     * ---this.retrieve_all() is successful
+     * ready(this);
+     * ---this -> instance of Database
     */
 
     /* 
@@ -99,7 +99,7 @@ module.exports = class Database{
             this.retrieve_all()
             .then(was_succesful => {
                 try{
-                    this.events.ready(this);
+                    this.emit("ready", this);
                 } catch(error) {
                     throw(error);
                 }
@@ -412,6 +412,16 @@ module.exports = class Database{
             return Object.keys(this.data[folder]);
         } else {
             return [];
+        }
+    }
+
+    emit(event, args) {
+        if(typeof event !== "string") {
+            return Error("Argument is not of type 'string'");
+        } else if(this.events[event] !== undefined) {
+            return this.events[event](args);
+        } else {
+            return null;
         }
     }
 }
