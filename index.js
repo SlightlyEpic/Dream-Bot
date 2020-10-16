@@ -175,6 +175,7 @@ client.on("guildDelete", guild => {
 	)
 })
 
+/*
 client.on("presenceUpdate", (oldPresence, newPresence) => {
 	//spotify role
 	if(database.has_started) {
@@ -195,6 +196,7 @@ client.on("presenceUpdate", (oldPresence, newPresence) => {
 	}
 	//
 })
+*/
 
 //------------------------------------------------------------------------------------------------------------//
 
