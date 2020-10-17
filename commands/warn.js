@@ -6,7 +6,7 @@ module.exports = {
     name: "warn",
     description: "Warns the mentioned user",
     usage: "warn <@mention> [reason]",
-    permissions: ["MANAGE_GUILD"],
+    permissions: ["BAN_MEMBERS"],
     is_visible: false,
     execute: async function(message, args, database) {
         let executor = message.member
