@@ -55,7 +55,7 @@ client.on("ready", () => {
 
 	client.user.setPresence({
 		activity: {
-			name: "you! rHelp",
+			name: `you! ${config.default_prefix}Help`,
 			type: "WATCHING"
 		},
 		status: "online"
