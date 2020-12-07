@@ -1,4 +1,4 @@
-let {MessageEmbed, Message} = require("discord.js")
+let { MessageEmbed } = require("discord.js")
 let config = require("../misc/config.json")
 let utility = require("../misc/utility.js")
 
